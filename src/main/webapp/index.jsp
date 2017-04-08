@@ -15,6 +15,7 @@
 
 <script type="text/javascript">
 var contextPath = "<%=request.getContextPath()%>";
+var stompClient = null;
 	function getModelList(){
 		$.ajax({
 			type : "POST",
@@ -37,6 +38,26 @@ var contextPath = "<%=request.getContextPath()%>";
 				}
 			}); */
 	}
+	
+	function connect() {
+		var socket = new SockJS('/paramsHandler/stomp');
+		stompClient = Stomp.over(socket);
+		stompClient.connect({}, function(frame) {
+			//setConnected(true);
+//			console.log('Connected: ' + frame);
+			stompClient.subscribe('/topic/modelacceptor', function(model) {
+				console.log(model.body);
+			});
+			
+			stompClient.subscribe('/topic/greetings', function(greeting) {
+				console.log(greeting.body);
+				//showGreeting(greeting);
+				//console.log(greeting);
+				//console.log(greeting.body);
+			});
+		});
+	}
+
 	function paramsChange(){  
 		var contextPath = "<%=request.getContextPath()%>";
 		var data = {
@@ -50,22 +71,13 @@ var contextPath = "<%=request.getContextPath()%>";
 			   					{"name":"高","type":"d","values":["10"]}
 			   	   		]
 			   	   },
-			   	   "path":"./tmp/box3333333"
+			   	"path":"/home/mzl/develop_tools/hxModels/vrml/"
 			   
 
 		};
-			$.ajax({
-				type : "POST",
-				url : contextPath + '/mvc/test',
-				dataType : "json",
-				contentType : "application/json",
-				data : JSON.stringify(data),
-
-				success : function(data) {
-					  console.log(data);
-				}
-			});
-		}
+		
+		stompClient.send("/app/paramschange", {}, JSON.stringify(data)); 
+	}
 
 	
 	function paramsChange1(){  
@@ -81,7 +93,7 @@ var contextPath = "<%=request.getContextPath()%>";
 			   					{"name":"高","type":"d","values":["10"]}
 			   	   		]
 			   	   },
-			   	   "path":"./tmp/box3333333"
+			   	   "path":"/home/mzl/develop_tools/hxModels/vrml/"
 			   
 
 		};
@@ -116,7 +128,7 @@ var contextPath = "<%=request.getContextPath()%>";
 
 </script>
 </head>
-<body>
+<body onload="connect()">
 	<noscript>
 		<h2 style="color: #ff0000">Seems your browser doesn't support
 			Javascript! Websocket relies on Javascript being enabled. Please
@@ -125,8 +137,9 @@ var contextPath = "<%=request.getContextPath()%>";
 	<div>
 		<div>
 			<button id="getModelList" onclick="getModelList();">获取模型列表</button>
-			<button id="startModeling" onclick="startModeling();">startModeling</button>
-
+			<!-- <button id="startModeling" onclick="startModeling();">startModeling</button> -->
+			
+			<button id="change" onclick="paramsChange()">调整模型</button>
 		</div>
 		<div>${roews[0].id }</div>
 	</div>

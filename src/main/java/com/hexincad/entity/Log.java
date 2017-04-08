@@ -11,7 +11,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name = "xx_log")
+@Table(name = "xx_log", catalog = "work")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "xx_log_sequence")
 public class Log extends BaseEntity {
 

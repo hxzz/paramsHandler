@@ -47,7 +47,7 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
 	/** 别名数 */
 	private static volatile long aliasCount = 0;
 
-	@PersistenceContext
+	@PersistenceContext(unitName="persistenceUnit")
 	protected EntityManager entityManager;
 
 	@SuppressWarnings("unchecked")

@@ -64,7 +64,7 @@
 	<mvc:resources location="/" mapping="/**/*.css" />
 	<mvc:resources location="/" mapping="/**/*.png" />
 	<mvc:resources location="/" mapping="/**/*.gif" />
-
+<!-- 
 	<websocket:message-broker
 		application-destination-prefix="/app">
 		<websocket:stomp-endpoint path="/stomp">
@@ -75,6 +75,6 @@
 			relay-host="127.0.0.1" relay-port="61613" heartbeat-receive-interval="20000"
 			heartbeat-send-interval="20000" />
 
-	</websocket:message-broker>
+	</websocket:message-broker> -->
 
 </beans>  
